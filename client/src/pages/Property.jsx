@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropertyImage from "../assets/properties/a1.jpg";
 import Search from "../components/Search";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessage } from "../features/message/messageSlice";
-import { bookMarkProperty } from "../features/property/propertySlice";
+import {
+  bookMarkProperty,
+  getProperty,
+} from "../features/property/propertySlice";
+import { useParams } from "react-router-dom";
+import LoadingScreen from "../components/LoadingScreen";
 
 const Property = () => {
   const {
@@ -14,6 +19,7 @@ const Property = () => {
     propertyErrorMessage,
   } = useSelector((state) => state.property);
 
+  const { id } = useParams();
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -41,6 +47,14 @@ const Property = () => {
     dispatch(bookMarkProperty(property));
   };
 
+  useEffect(() => {
+    dispatch(getProperty(id));
+  }, []);
+
+  if (propertyLoading) {
+    return <LoadingScreen />;
+  }
+
   return (
     <>
       <Search />
@@ -49,7 +63,7 @@ const Property = () => {
         <div className="container-xl m-auto">
           <div className="grid grid-cols-1">
             <img
-              src={PropertyImage}
+              src={property.imageUrl}
               alt=""
               className="object-cover h-[400px] w-full"
               width="1800"

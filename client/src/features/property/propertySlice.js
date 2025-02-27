@@ -29,7 +29,24 @@ const propertySlice = createSlice({
         state.propertyLoading = false;
         state.propertySuccess = false;
         state.propertyError = true;
-        state, (propertyErrorMessage = action.payload);
+        state.propertyErrorMessage = action.payload;
+      })
+      .addCase(getProperty.pending, (state, action) => {
+        state.propertyLoading = true;
+        state.propertySuccess = false;
+        state.propertyError = false;
+      })
+      .addCase(getProperty.fulfilled, (state, action) => {
+        state.propertyLoading = false;
+        state.propertySuccess = true;
+        state.propertyError = false;
+        state.property = action.payload;
+      })
+      .addCase(getProperty.rejected, (state, action) => {
+        state.propertyLoading = false;
+        state.propertySuccess = false;
+        state.propertyError = true;
+        state.propertyErrorMessage = action.payload;
       });
   },
 });
@@ -47,6 +64,15 @@ export const bookMarkProperty = createAsyncThunk(
 export const getProperties = createAsyncThunk("FETCH/PROPERTIES", async () => {
   try {
     return await propertyService.fetchProperties();
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// Get Property
+export const getProperty = createAsyncThunk("FETCH/PROPERTY", async (id) => {
+  try {
+    return await propertyService.fetchProperty(id);
   } catch (error) {
     console.log(error);
   }

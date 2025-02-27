@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import PropertyImage from "../assets/properties/f1.jpg";
 
 const PropertyCard = ({ property }) => {
   const { pathname } = useLocation();
@@ -13,10 +12,14 @@ const PropertyCard = ({ property }) => {
       ) : (
         <></>
       )}
-      <img src={PropertyImage} alt="" className="object-cover rounded-t-xl" />
+      <img
+        src={property.imageUrl}
+        alt=""
+        className="object-cover rounded-t-xl"
+      />
       <div className="p-4">
         <div className="text-left md:text-center lg:text-left mb-6">
-          <div className="text-gray-600">{property.type}</div>
+          <div className="text-gray-600">{property.propertyType}</div>
           <h3 className="text-xl font-bold">{property.name}</h3>
         </div>
         <h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right">
@@ -67,7 +70,7 @@ const PropertyCard = ({ property }) => {
             </span>
           </div>
           <Link
-            to={property.id}
+            to={`/property/${property._id}`}
             className="h-[36px] bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-center text-sm"
           >
             Details
