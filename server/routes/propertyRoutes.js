@@ -6,21 +6,22 @@ const {
   updateProperty,
   removeProperty,
 } = require("../controllers/propertyController");
+const protect = require("../middleware/authMiddleware");
 const router = express.Router();
 
 // get properties
 router.get("/", getProperties);
 
 // add property
-router.post("/", addProperty);
+router.post("/", protect, addProperty);
 
 // get property
 router.get("/:id", getProperty);
 
 // update property
-router.put("/:id", updateProperty);
+router.put("/:id", protect, updateProperty);
 
 // remove property
-router.delete("/:id", removeProperty);
+router.delete("/:id", protect, removeProperty);
 
 module.exports = router;

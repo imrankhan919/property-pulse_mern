@@ -23,7 +23,7 @@ const Home = () => {
   } = useSelector((state) => state.property);
 
   const featuredProperties = properties.filter(
-    (property) => property.is_featured
+    (property) => property.isFeatured
   );
 
   const navigate = useNavigate();

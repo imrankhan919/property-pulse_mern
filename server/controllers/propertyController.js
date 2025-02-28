@@ -24,7 +24,10 @@ const getProperty = expressAsyncHandler(async (req, res) => {
 });
 
 const addProperty = expressAsyncHandler(async (req, res) => {
-  const newProperty = await Property.create(req.body);
+  const newProperty = await Property.create({
+    user: req.user.id,
+    ...req.body,
+  });
 
   if (!newProperty) {
     res.status(400);

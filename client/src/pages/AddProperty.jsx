@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen";
 import { toast } from "react-toastify";
+import { createProperty } from "../features/property/propertySlice";
 
 const AddProperty = () => {
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
+  const { user, isLoading, isError, message } = useSelector(
     (state) => state.auth
   );
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    type: "",
+    propertyType: "",
     name: "",
     description: "",
     location: {
@@ -35,16 +37,16 @@ const AddProperty = () => {
       email: "",
       phone: "",
     },
-    images: [],
+    imageUrl: "",
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // Handle nested object updates
-    if (name.includes(".")) {
-      const keys = name.split(".");
-      setFormData((prev) => {
+    setFormData((prev) => {
+      if (name.includes(".")) {
+        // Handle nested objects
+        const keys = name.split(".");
         let updated = { ...prev };
         let ref = updated;
 
@@ -53,22 +55,20 @@ const AddProperty = () => {
         }
         ref[keys[keys.length - 1]] = type === "checkbox" ? checked : value;
         return updated;
-      });
-    } else if (type === "checkbox") {
-      setFormData((prev) => ({
-        ...prev,
-        amenities: checked
-          ? [...prev.amenities, value]
-          : prev.amenities.filter((item) => item !== value),
-      }));
-    } else if (type === "file") {
-      setFormData((prev) => ({
-        ...prev,
-        images: Array.from(e.target.files),
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+      } else {
+        // Handle top-level fields
+        return {
+          ...prev,
+          [name]: type === "checkbox" ? checked : value,
+        };
+      }
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createProperty(formData));
+    navigate("/");
   };
 
   useEffect(() => {
@@ -84,11 +84,6 @@ const AddProperty = () => {
   if (isLoading) {
     return <LoadingScreen />;
   }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
 
   return (
     <section className="bg-blue-50">
@@ -108,11 +103,13 @@ const AddProperty = () => {
               </label>
               <select
                 id="type"
-                name="type"
+                name="propertyType"
+                value={formData.propertyType}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
                 required
               >
+                <option value="#">Please Select Property Type</option>
                 <option value="Apartment">Apartment</option>
                 <option value="Condo">Condo</option>
                 <option value="House">House</option>
@@ -524,16 +521,16 @@ const AddProperty = () => {
                 htmlFor="images"
                 className="block text-gray-700 font-bold mb-2"
               >
-                Images (Select up to 4 images)
+                Images (Select 1 image only*)
               </label>
               <input
-                type="file"
+                type="text"
                 id="images"
-                name="images"
+                value={formData.imageUrl}
+                name="imageUrl"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
-                accept="image/*"
-                multiple
+                placeholder="Enter Image URL"
               />
             </div>
 

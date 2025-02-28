@@ -2,6 +2,11 @@ const { mongoose } = require("mongoose");
 
 const propertySchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     propertyType: {
       type: String,
       required: true,
@@ -13,6 +18,9 @@ const propertySchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    isFeatured: {
+      type: Boolean,
     },
     location: {
       street: {

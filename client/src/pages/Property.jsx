@@ -95,8 +95,8 @@ const Property = () => {
                 <div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
                   <i className="fa-solid fa-location-dot text-lg text-orange-700 mr-2"></i>
                   <p className="text-orange-700">
-                    {property.location.street} {property.location.city}{" "}
-                    {property.location.state} {property.location.zipcode}
+                    {property?.location?.street} {property?.location?.city}{" "}
+                    {property?.location?.state} {property?.location?.zipcode}
                   </p>
                 </div>
 
@@ -105,7 +105,7 @@ const Property = () => {
                 </h3>
                 <div className="flex flex-col md:flex-row justify-around">
                   <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-                    {!property.rates.nighlty ? (
+                    {!property?.rates?.nighlty ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Nightly
@@ -120,13 +120,13 @@ const Property = () => {
                           Nightly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property.rates.nightly}
+                          ${property?.rates?.nightly}
                         </div>
                       </>
                     )}
                   </div>
                   <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-                    {!property.rates.weekly ? (
+                    {!property?.rates?.weekly ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Weekly
@@ -141,13 +141,13 @@ const Property = () => {
                           Weekly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property.rates.weekly}
+                          ${property?.rates?.weekly}
                         </div>
                       </>
                     )}
                   </div>
                   <div className="flex items-center justify-center mb-4 pb-4 md:pb-0">
-                    {!property.rates.monthly ? (
+                    {!property?.rates?.monthly ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Monthly
@@ -162,7 +162,7 @@ const Property = () => {
                           Monthly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property.rates.monthly}
+                          ${property?.rates?.monthly}
                         </div>
                       </>
                     )}
