@@ -1,8 +1,30 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfileImage from "../assets/profile.png";
 import ListingCard from "../components/ListingCard";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getUserProperty } from "../features/property/propertySlice";
+import LoadingScreen from "../components/LoadingScreen";
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
+  const { properties, propertyLoading } = useSelector(
+    (state) => state.property
+  );
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+
+    dispatch(getUserProperty());
+  }, [user]);
+
+  if (!user || propertyLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>
@@ -30,7 +52,9 @@ const Profile = () => {
               <div className="md:w-3/4 md:pl-4">
                 <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
 
-                <ListingCard />
+                {properties.map((property) => (
+                  <ListingCard key={property._id} property={property} />
+                ))}
               </div>
             </div>
           </div>

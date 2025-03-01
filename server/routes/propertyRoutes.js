@@ -5,6 +5,7 @@ const {
   getProperty,
   updateProperty,
   removeProperty,
+  getMyProperties,
 } = require("../controllers/propertyController");
 const protect = require("../middleware/authMiddleware");
 const router = express.Router();

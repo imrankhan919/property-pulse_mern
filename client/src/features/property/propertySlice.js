@@ -64,6 +64,23 @@ const propertySlice = createSlice({
         state.propertySuccess = false;
         state.propertyError = true;
         state.propertyErrorMessage = action.payload;
+      })
+      .addCase(getUserProperty.pending, (state, action) => {
+        state.propertyLoading = true;
+        state.propertySuccess = false;
+        state.propertyError = false;
+      })
+      .addCase(getUserProperty.fulfilled, (state, action) => {
+        state.propertyLoading = false;
+        state.propertySuccess = true;
+        state.propertyError = false;
+        state.properties = action.payload;
+      })
+      .addCase(getUserProperty.rejected, (state, action) => {
+        state.propertyLoading = false;
+        state.propertySuccess = false;
+        state.propertyError = true;
+        state.propertyErrorMessage = action.payload;
       });
   },
 });
@@ -94,6 +111,19 @@ export const getProperty = createAsyncThunk("FETCH/PROPERTY", async (id) => {
     console.log(error);
   }
 });
+
+// Get Property
+export const getUserProperty = createAsyncThunk(
+  "FETCH/USER_PROPERTY",
+  async (_, thunkAPI) => {
+    let token = thunkAPI.getState().auth.user.token;
+    try {
+      return await propertyService.fetchUsersProperty(token);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 // Add Property
 export const createProperty = createAsyncThunk(

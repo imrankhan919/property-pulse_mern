@@ -1,18 +1,18 @@
 import ListImage from "../assets/properties/a1.jpg";
 
-const ListingCard = () => {
+const ListingCard = ({ property }) => {
   return (
     <div className="mb-10">
       <a href="/property.html">
         <img
           className="h-32 w-full rounded-md object-cover"
-          src={ListImage}
+          src={property.imageUrl}
           alt="Property 1"
         />
       </a>
       <div className="mt-2">
-        <p className="text-lg font-semibold">Property Title 1</p>
-        <p className="text-gray-600">Address: 123 Main St</p>
+        <p className="text-lg font-semibold">{property.name}</p>
+        <p className="text-gray-600">Address: {property.location.city}</p>
       </div>
       <div className="mt-2">
         <a

@@ -12,7 +12,7 @@ import LoadingScreen from "../components/LoadingScreen";
 
 const Property = () => {
   const {
-    property,
+    property: singleProperty,
     propertyLoading,
     propertySuccess,
     propertyError,
@@ -51,7 +51,7 @@ const Property = () => {
     dispatch(getProperty(id));
   }, []);
 
-  if (propertyLoading) {
+  if (propertyLoading || !singleProperty.amenities) {
     return <LoadingScreen />;
   }
 
@@ -63,7 +63,7 @@ const Property = () => {
         <div className="container-xl m-auto">
           <div className="grid grid-cols-1">
             <img
-              src={property.imageUrl}
+              src={singleProperty.imageUrl}
               alt=""
               className="object-cover h-[400px] w-full"
               width="1800"
@@ -90,13 +90,17 @@ const Property = () => {
           <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
             <main>
               <div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
-                <div className="text-gray-500 mb-4">{property.type}</div>
-                <h1 className="text-3xl font-bold mb-4">{property.name}</h1>
+                <div className="text-gray-500 mb-4">{singleProperty.type}</div>
+                <h1 className="text-3xl font-bold mb-4">
+                  {singleProperty.name}
+                </h1>
                 <div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
                   <i className="fa-solid fa-location-dot text-lg text-orange-700 mr-2"></i>
                   <p className="text-orange-700">
-                    {property?.location?.street} {property?.location?.city}{" "}
-                    {property?.location?.state} {property?.location?.zipcode}
+                    {singleProperty?.location?.street}{" "}
+                    {singleProperty?.location?.city}{" "}
+                    {singleProperty?.location?.state}{" "}
+                    {singleProperty?.location?.zipcode}
                   </p>
                 </div>
 
@@ -105,7 +109,7 @@ const Property = () => {
                 </h3>
                 <div className="flex flex-col md:flex-row justify-around">
                   <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-                    {!property?.rates?.nighlty ? (
+                    {!singleProperty?.rates?.nighlty ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Nightly
@@ -120,13 +124,13 @@ const Property = () => {
                           Nightly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property?.rates?.nightly}
+                          ${singleProperty?.rates?.nightly}
                         </div>
                       </>
                     )}
                   </div>
                   <div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-                    {!property?.rates?.weekly ? (
+                    {!singleProperty?.rates?.weekly ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Weekly
@@ -141,13 +145,13 @@ const Property = () => {
                           Weekly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property?.rates?.weekly}
+                          ${singleProperty?.rates?.weekly}
                         </div>
                       </>
                     )}
                   </div>
                   <div className="flex items-center justify-center mb-4 pb-4 md:pb-0">
-                    {!property?.rates?.monthly ? (
+                    {!singleProperty?.rates?.monthly ? (
                       <>
                         <div className="text-gray-500 mr-2 font-bold">
                           Monthly
@@ -162,7 +166,7 @@ const Property = () => {
                           Monthly
                         </div>
                         <div className="text-2xl font-bold text-blue-500">
-                          ${property?.rates?.monthly}
+                          ${singleProperty?.rates?.monthly}
                         </div>
                       </>
                     )}
@@ -176,28 +180,30 @@ const Property = () => {
                 </h3>
                 <div className="flex justify-center gap-4 text-blue-500 mb-4 text-xl space-x-9">
                   <p>
-                    <i className="fa-solid fa-bed"></i> {property.beds}
+                    <i className="fa-solid fa-bed"></i> {singleProperty.beds}
                     <span className="hidden sm:inline">Beds</span>
                   </p>
                   <p>
-                    <i className="fa-solid fa-bath"></i> {property.baths}
+                    <i className="fa-solid fa-bath"></i> {singleProperty.baths}
                     <span className="hidden sm:inline">Baths</span>
                   </p>
                   <p>
                     <i className="fa-solid fa-ruler-combined"></i>
-                    {property.square_feet}{" "}
+                    {singleProperty.square_feet}{" "}
                     <span className="hidden sm:inline">sqft</span>
                   </p>
                 </div>
 
-                <p className="text-gray-500 mb-4">{property.description}</p>
+                <p className="text-gray-500 mb-4">
+                  {singleProperty.description}
+                </p>
               </div>
 
               <div className="bg-white p-6 rounded-lg shadow-md mt-6">
                 <h3 className="text-lg font-bold mb-6">Amenities</h3>
 
                 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 list-none">
-                  {property.amenities.map((amenity, index) => {
+                  {singleProperty?.amenities.map((amenity, index) => {
                     return (
                       <li key={index}>
                         <i className="fas fa-check text-green-600 mr-2 mt-3"></i>{" "}
@@ -212,7 +218,7 @@ const Property = () => {
             {/* <!-- Sidebar --> */}
             <aside className="space-y-4">
               <button
-                onClick={() => handleBookmarkProperty(property)}
+                onClick={() => handleBookmarkProperty(singleProperty)}
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
               >
                 <i className="fas fa-bookmark mr-2"></i> Bookmark Property

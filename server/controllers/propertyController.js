@@ -61,10 +61,22 @@ const removeProperty = expressAsyncHandler(async (req, res) => {
   });
 });
 
+const getMyProperties = expressAsyncHandler(async (req, res) => {
+  const properties = await Property.find({ user: req.user._id });
+
+  if (!properties) {
+    res.status(404);
+    throw new Error("No Property Found!!");
+  }
+
+  res.status(200).json(properties);
+});
+
 module.exports = {
   getProperties,
   getProperty,
   addProperty,
   updateProperty,
   removeProperty,
+  getMyProperties,
 };

@@ -21,10 +21,22 @@ const addProperty = async (formData, token) => {
   return response.data;
 };
 
+const fetchUsersProperty = async (token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get("/api/auth/properties", options);
+  return response.data;
+};
+
 const propertyService = {
   fetchProperties,
   fetchProperty,
   addProperty,
+  fetchUsersProperty,
 };
 
 export default propertyService;
