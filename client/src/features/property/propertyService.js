@@ -32,11 +32,23 @@ const fetchUsersProperty = async (token) => {
   return response.data;
 };
 
+const removeUserProperty = async (id, token) => {
+  const options = {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.delete("/api/property/" + id, options);
+  return response.data;
+};
+
 const propertyService = {
   fetchProperties,
   fetchProperty,
   addProperty,
   fetchUsersProperty,
+  removeUserProperty,
 };
 
 export default propertyService;

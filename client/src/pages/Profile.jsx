@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { getUserProperty } from "../features/property/propertySlice";
 import LoadingScreen from "../components/LoadingScreen";
+import { toast } from "react-toastify";
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
-  const { properties, propertyLoading } = useSelector(
-    (state) => state.property
-  );
+  const { properties, propertyLoading, propertyError, propertyErrorMessage } =
+    useSelector((state) => state.property);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,6 +17,10 @@ const Profile = () => {
   useEffect(() => {
     if (!user) {
       navigate("/login");
+    }
+
+    if (propertyError && propertyErrorMessage) {
+      toast.error(propertyErrorMessage);
     }
 
     dispatch(getUserProperty());

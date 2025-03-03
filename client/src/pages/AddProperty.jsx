@@ -10,6 +10,8 @@ const AddProperty = () => {
     (state) => state.auth
   );
 
+  const { edit } = useSelector((state) => state.property);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -79,7 +81,9 @@ const AddProperty = () => {
     if (isError && message) {
       toast.error(message, { position: "bottom-center", theme: "colored" });
     }
-  }, [user, isError, message]);
+
+    setFormData(edit.property);
+  }, [user, isError, message, edit]);
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -127,6 +131,7 @@ const AddProperty = () => {
                 type="text"
                 id="name"
                 name="name"
+                value={formData.name}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="eg. Beautiful Apartment In Miami"
@@ -143,6 +148,7 @@ const AddProperty = () => {
               <textarea
                 id="description"
                 name="description"
+                value={formData.description}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
                 rows="4"
@@ -158,6 +164,7 @@ const AddProperty = () => {
                 type="text"
                 id="street"
                 name="location.street"
+                value={formData.location?.street}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="Street"
@@ -166,6 +173,7 @@ const AddProperty = () => {
                 type="text"
                 id="city"
                 name="location.city"
+                value={formData.location?.city}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="City"
@@ -174,6 +182,7 @@ const AddProperty = () => {
               <input
                 type="text"
                 id="state"
+                value={formData.location?.state}
                 name="location.state"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 mb-2"
@@ -183,6 +192,7 @@ const AddProperty = () => {
               <input
                 type="text"
                 id="zipcode"
+                value={formData.location?.zipcode}
                 name="location.zipcode"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 mb-2"
@@ -201,6 +211,7 @@ const AddProperty = () => {
                 <input
                   type="number"
                   id="beds"
+                  value={formData.beds}
                   name="beds"
                   onChange={handleChange}
                   className="border rounded w-full py-2 px-3"
@@ -218,6 +229,7 @@ const AddProperty = () => {
                   type="number"
                   id="baths"
                   name="baths"
+                  value={formData.baths}
                   onChange={handleChange}
                   className="border rounded w-full py-2 px-3"
                   required
@@ -234,6 +246,7 @@ const AddProperty = () => {
                   type="number"
                   id="square_feet"
                   name="square_feet"
+                  value={formData.square_feet}
                   onChange={handleChange}
                   className="border rounded w-full py-2 px-3"
                   required
@@ -435,6 +448,7 @@ const AddProperty = () => {
                     type="number"
                     id="weekly_rate"
                     name="rates.weekly"
+                    value={formData.rates?.weekly}
                     onChange={handleChange}
                     className="border rounded w-full py-2 px-3"
                   />
@@ -446,6 +460,7 @@ const AddProperty = () => {
                   <input
                     type="number"
                     id="monthly_rate"
+                    value={formData.rates?.monthly}
                     name="rates.monthly"
                     onChange={handleChange}
                     className="border rounded w-full py-2 px-3"
@@ -458,6 +473,7 @@ const AddProperty = () => {
                   <input
                     type="number"
                     id="nightly_rate"
+                    value={formData.rates?.nightly}
                     name="rates.nightly"
                     onChange={handleChange}
                     className="border rounded w-full py-2 px-3"
@@ -477,6 +493,7 @@ const AddProperty = () => {
                 type="text"
                 id="seller_name"
                 name="seller_info.name"
+                value={formData.seller_info?.name}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
                 placeholder="Name"
@@ -493,6 +510,7 @@ const AddProperty = () => {
                 type="email"
                 id="seller_email"
                 name="seller_info.email"
+                value={formData.seller_info?.email}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
                 placeholder="Email address"
@@ -510,6 +528,7 @@ const AddProperty = () => {
                 type="tel"
                 id="seller_phone"
                 name="seller_info.phone"
+                value={formData.seller_info?.phone}
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3"
                 placeholder="Phone"
